@@ -1163,12 +1163,12 @@ export const destinations = [
       'The cool queen of the Nilgiris — colonial gardens, blue lakes, tea gardens, scenic viewpoints and the iconic toy train.',
 
     image:
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
+      'https://images.unsplash.com/photo-1711553186815-8fbc95d02155?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     images: [
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1574236170877-13e51afa9283?w=800&q=80',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80',
-      'https://images.unsplash.com/photo-1597074866923-dc0589150a30?w=800&q=80'
+      'https://images.unsplash.com/photo-1711553186815-8fbc95d02155?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://plus.unsplash.com/premium_photo-1697730314165-2cd71dc3a6a4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1707655315272-33a54a771068?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/flagged/photo-1582360694694-1eb3d0947263?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     ],
 
     tags: ['Hills', 'Nature', 'Family'],
@@ -1286,12 +1286,12 @@ export const destinations = [
       'A high-altitude desert destination known for monasteries, Pangong Lake, Nubra Valley, mountain passes and epic motorcycle routes.',
 
     image:
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
+      'https://plus.unsplash.com/premium_photo-1661962344178-19930ba15492?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     images: [
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1597074866923-dc0589150a30?w=800&q=80',
-      'https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=800&q=80',
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80'
+      'https://plus.unsplash.com/premium_photo-1661962344178-19930ba15492?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1536295243470-d7cba4efab7b?q=80&w=1438&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1663407978077-ca116e36abf0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://plus.unsplash.com/premium_photo-1697729680546-2ef72b3073e9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     ],
 
     tags: ['Adventure', 'Mountains', 'Scenic', 'Biking'],
@@ -1409,12 +1409,12 @@ export const destinations = [
       'Pristine turquoise bays, white sand beaches, coral reefs, water sports and a peaceful tropical island escape.',
 
     image:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
+      'https://wallpapercave.com/wp/wp5296530.jpg',
     images: [
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80',
-      'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80',
-      'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80'
+      'https://wallpapercave.com/wp/wp5296530.jpg',
+      'https://wallpapercave.com/wp/wp5296536.jpg',
+      'https://wallpapercrafter.com/th8004/1176190-india-andaman-and-nicobar-islands-water-sky-sea.jpg',
+      'https://deih43ym53wif.cloudfront.net/port-blair-andaman-india-nicobar-shutterstock_1060993676.jpg_bfbe7f4701.jpg'
     ],
 
     tags: ['Beach', 'Island', 'Nature', 'Water'],
@@ -1532,12 +1532,12 @@ export const destinations = [
       'Home of the magnificent Taj Mahal, Mughal architecture, Agra Fort and famous local sweets.',
 
     image:
-      'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80',
+      'https://rare-gallery.com/uploads/posts/349038-4k-wallpaper.jpg',
     images: [
-      'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80',
-      'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80',
-      'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80',
-      'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80'
+      'https://rare-gallery.com/uploads/posts/349038-4k-wallpaper.jpg',
+      'https://i.ytimg.com/vi/NkIennl7XEI/maxresdefault.jpg',
+      'https://cdn.britannica.com/37/178637-050-22E50FA5/Jahangirs-Palace-Agra-Fort-India-Uttar-Pradesh.jpg',
+      'https://wallpapercrafter.com/desktop1/573838-taj-mahal-mausoleum-south-bank-yamuna-river.jpg'
     ],
 
     tags: ['Heritage', 'Culture', 'History'],
@@ -1647,12 +1647,12 @@ export const destinations = [
       'The spiritual heart of the Golden Temple, famous for langar, Wagah Border, Punjabi cuisine and rich heritage.',
 
     image:
-      'https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=800&q=80',
+      'https://images.pexels.com/photos/12193697/pexels-photo-12193697.jpeg?cs=srgb&dl=pexels-inder-singh-12193697.jpg&fm=jpg',
     images: [
-      'https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=800&q=80',
-      'https://images.unsplash.com/photo-1590123578993-05b5ab0857a2?w=800&q=80',
-      'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&q=80',
-      'https://images.unsplash.com/photo-1520769945061-0a448c463865?w=800&q=80'
+      'https://images.pexels.com/photos/12193697/pexels-photo-12193697.jpeg?cs=srgb&dl=pexels-inder-singh-12193697.jpg&fm=jpg',
+      'https://wallpaperbat.com/img/32635904-golden-temple-amritsar-punjab-india.jpg',
+      'https://wallpaper.forfun.com/fetch/e7/e743cb074becc75ad41f41213a5e1972.jpeg?w=2000',
+      'https://i.ytimg.com/vi/m701WKQMeYQ/maxresdefault.jpg'
     ],
 
     tags: ['Spiritual', 'Culture', 'Food'],
@@ -1761,12 +1761,12 @@ export const destinations = [
       'The Golden City — majestic sand dunes, camel safaris, spectacular havelis and the unique culture of the Thar Desert.',
 
     image:
-      'https://images.unsplash.com/photo-1624309254682-8e8db1f90e8a?w=800&q=80',
+      'https://www.bwallpaperhd.com/wp-content/uploads/2018/08/JaisalmerFort.jpg',
     images: [
-      'https://images.unsplash.com/photo-1624309254682-8e8db1f90e8a?w=800&q=80',
-      'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80',
-      'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80',
-      'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80'
+      'https://www.bwallpaperhd.com/wp-content/uploads/2018/08/JaisalmerFort.jpg',
+      'https://res.cloudinary.com/kmadmin/image/upload/v1725880849/kiomoi/jaislamer_fort_night_view_1914.jpg',
+      'https://tse4.mm.bing.net/th/id/OIP.-NmjVeXftF3-rZpgtxpTCwHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+      'https://thejerker.com/wp-content/uploads/2023/01/Best-Places-to-Visit-in-Jaisalmer.jpg'
     ],
 
     tags: ['Desert', 'Adventure', 'Heritage', 'Nature'],
@@ -1876,12 +1876,12 @@ export const destinations = [
       'The Scotland of the East — misty pine hills, waterfalls, peaceful lakes and beautiful Khasi landscapes.',
 
     image:
-      'https://images.unsplash.com/photo-1441716844725-09cedc13a4e7?w=800&q=80',
+      'https://wallpaperaccess.com/full/8391715.jpg',
     images: [
-      'https://images.unsplash.com/photo-1441716844725-09cedc13a4e7?w=800&q=80',
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1574236170877-13e51afa9283?w=800&q=80',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80'
+      'https://wallpaperaccess.com/full/8391715.jpg',
+      'https://hikerwolf.com/wp-content/uploads/2021/04/Bishop-Falls.jpg',
+      'https://cdn.wallpapersafari.com/63/71/L9Vc2o.jpg',
+      'https://tse4.mm.bing.net/th/id/OIP.eMMNAf5BElqlBmGWfNef4wHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'
     ],
 
     tags: ['Nature', 'Hills', 'Waterfalls'],
@@ -1972,12 +1972,12 @@ export const destinations = [
       'A beautiful Himalayan capital with monasteries, mountain views, scenic cableways and peaceful surroundings.',
 
     image:
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
+      'https://wallpaperaccess.com/full/9392448.jpg',
     images: [
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1597074866923-dc0589150a30?w=800&q=80',
-      'https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=800&q=80',
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80'
+      'https://wallpaperaccess.com/full/9392448.jpg',
+      'https://wallpapercave.com/wp/wp8551853.jpg',
+      'https://media.istockphoto.com/id/1296295435/photo/night-view-of-gangtok-city.jpg?s=612x612&w=0&k=20&c=qyAIM7bqNJFdaBhGOyQ7MrEKWYiD5KPdTfnrCiHpkqQ=',
+      'https://media.istockphoto.com/id/606223864/photo/view-of-gangtok-the-capital-city-of-sikkim-india.jpg?s=612x612&w=0&k=20&c=UEKddFCWZcHG-x9ru-Lles8FiPv1wMTviTD4QeFlBo4='
     ],
 
     tags: ['Mountains', 'Nature', 'Culture'],
@@ -2068,12 +2068,12 @@ export const destinations = [
       'The Scotland of India — coffee plantations, misty hills, waterfalls, trekking and unique Kodava culture.',
 
     image:
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
+      'https://wallpaperaccess.com/full/9421658.jpg',
     images: [
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1574236170877-13e51afa9283?w=800&q=80',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80',
-      'https://images.unsplash.com/photo-1597074866923-dc0589150a30?w=800&q=80'
+      'https://wallpaperaccess.com/full/9421658.jpg',
+      'https://wallpaperaccess.com/full/3718732.jpg',
+      'https://images.pexels.com/photos/35463580/pexels-photo-35463580.jpeg?cs=srgb&dl=pexels-nikhil-c-2153462646-35463580.jpg&fm=jpg',
+      'https://www.captureatrip.com/_next/image?url=https%3A%2F%2Fcaptureatrip-cms-storage.s3.ap-south-1.amazonaws.com%2FThings_to_Do_in_Coorg_85bf5736b1.jpg&w=3840&q=50'
     ],
 
     tags: ['Mountains', 'Nature', 'Coffee', 'Offbeat'],
@@ -2164,12 +2164,12 @@ export const destinations = [
       'French-flavoured streets, colourful buildings, cafes, beaches, Auroville and a relaxed coastal atmosphere.',
 
     image:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
+      'https://wallpaperaccess.com/full/9427816.jpg',
     images: [
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80',
-      'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80',
-      'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80'
+      'https://wallpaperaccess.com/full/9427816.jpg',
+      'https://wallpaperaccess.com/full/9427837.jpg',
+      'https://www.clubmahindra.com/blog/media/section_images/shuttersto-1ff0af0d76640ed.jpg',
+      'https://tse4.mm.bing.net/th/id/OIP.iVM4hJH4udHscaM5uOyFLwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'
     ],
 
     tags: ['Beach', 'French', 'Yoga', 'Culture'],
@@ -2452,12 +2452,12 @@ export const destinations = [
       'Nepal’s wild heart — national park safaris, one-horned rhinos, jungle adventures and Tharu culture.',
 
     image:
-      'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=800&q=80',
+      'https://th.bing.com/th/id/R.0ef303c4a74a84c147fa9fc2f31369e2?rik=r9%2ff6%2bMvizuGqw&riu=http%3a%2f%2fbrainbridgenepal.com%2fwp-content%2fuploads%2f2025%2f04%2fChitwan.National.Park_.original.2800-scaled-1.jpg&ehk=Z1rbVY8IhMn6JhGaqG0Mu0QOyCaEkuxVi7ts7C8E1o4%3d&risl=&pid=ImgRaw&r=0',
     images: [
-      'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=800&q=80',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80',
-      'https://images.unsplash.com/photo-1574236170877-13e51afa9283?w=800&q=80',
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80'
+      'https://th.bing.com/th/id/R.0ef303c4a74a84c147fa9fc2f31369e2?rik=r9%2ff6%2bMvizuGqw&riu=http%3a%2f%2fbrainbridgenepal.com%2fwp-content%2fuploads%2f2025%2f04%2fChitwan.National.Park_.original.2800-scaled-1.jpg&ehk=Z1rbVY8IhMn6JhGaqG0Mu0QOyCaEkuxVi7ts7C8E1o4%3d&risl=&pid=ImgRaw&r=0',
+      'https://wallpapercat.com/w/full/e/a/1/1599159-2732x1536-desktop-hd-chitwan-national-park-wallpaper-image.jpg',
+      'https://tse3.mm.bing.net/th/id/OIP.pc3B0Ardc5f1YLqln2xxVwHaFh?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+      'https://tse1.mm.bing.net/th/id/OIP.n3tDaCSBke24jnGaF6-wCAHaEn?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'
     ],
 
     tags: ['Wildlife', 'Nature', 'Adventure', 'Family'],
@@ -2644,12 +2644,12 @@ export const destinations = [
       'A peaceful Himalayan viewpoint famous for sunrise, mountain views and quiet countryside surroundings.',
 
     image:
-      'https://images.unsplash.com/photo-1523292562811-8fa7962a78c8?w=800&q=80',
+      'https://www.tusktravel.com.mx/blog/wp-content/uploads/2024/11/Nepal-Nagarkot-Himalayan-Views.jpg',
     images: [
-      'https://images.unsplash.com/photo-1523292562811-8fa7962a78c8?w=800&q=80',
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=800&q=80',
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80'
+      'https://www.tusktravel.com.mx/blog/wp-content/uploads/2024/11/Nepal-Nagarkot-Himalayan-Views.jpg',
+      'https://cdn.getyourguide.com/img/tour/1c41c3c8456b7fcb6985b70ffd48b18f61cad36b0f1df9e8e95ac99e4a7f1a51.jpeg/148.jpg',
+      'https://tse2.mm.bing.net/th/id/OIP.lBqr3wroX63QWodylpXa_wHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+      'https://tse3.mm.bing.net/th/id/OIP.e36cqnZdIVYcK6SwMSyrgQHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'
     ],
 
     tags: ['Mountains', 'Sunrise', 'Nature'],
@@ -2732,12 +2732,12 @@ export const destinations = [
       'A beautiful hillside town with preserved streets, mountain views, homestays and peaceful village experiences.',
 
     image:
-      'https://images.unsplash.com/photo-1555109307-f7d9da25c244?w=800&q=80',
+      'https://tse1.mm.bing.net/th/id/OIP.d00KnCvaA1NBtkgLBCLXhQHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
     images: [
-      'https://images.unsplash.com/photo-1555109307-f7d9da25c244?w=800&q=80',
-      'https://images.unsplash.com/photo-1574236170877-13e51afa9283?w=800&q=80',
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80',
-      'https://images.unsplash.com/photo-1597074866923-dc0589150a30?w=800&q=80'
+      'https://tse1.mm.bing.net/th/id/OIP.d00KnCvaA1NBtkgLBCLXhQHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+      'https://img.freepik.com/premium-photo/sunset-bandipur-nepal_165988-246.jpg?w=2000',
+      'https://karlijntravels.com/wp-content/uploads/2024/05/Straat-in-Bandipur-1170x780.jpg',
+      'https://cdn.atrsafari.com/cdn/05explore/locations-and-lodges/asia/nepal/bandipur/0/stills/00page/01BAND-IM0001-bandipur.jpg'
     ],
 
     tags: ['Offbeat', 'Culture', 'Mountains'],
@@ -2820,12 +2820,12 @@ export const destinations = [
       'The rooftop of the world — Everest trekking, Sherpa villages, monasteries, high mountain passes and unforgettable Himalayan landscapes.',
 
     image:
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
+      'https://i.redd.it/rdmwklboei151.jpg',
     images: [
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1597074866923-dc0589150a30?w=800&q=80',
-      'https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=800&q=80',
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80'
+      'https://i.redd.it/rdmwklboei151.jpg',
+      'https://wallpapercave.com/wp/wp12184625.jpg',
+      'https://nepalgatewaytrekking.com/_next/image?url=https:%2F%2Fmedia.app.nepalgatewaytrekking.com%2Fuploads%2Ffullbanner%2Feverest-region-village.webp&w=3840&q=75&dpl=dpl_CGKTmXvtGnARAARMjmiTByUSxyXT',
+      'https://res.cloudinary.com/aenetworks/image/upload/c_fill,ar_2,w_3840,h_1920,g_auto/dpr_auto/f_auto/q_auto:eco/v1/gettyimages-1088050790?_a=BAVAZGDX0'
     ],
 
     tags: ['Trekking', 'Mountains', 'Adventure', 'Epic'],
@@ -2916,12 +2916,12 @@ export const destinations = [
       'One of the world’s most famous trekking destinations, featuring Annapurna Circuit, Poon Hill, mountain villages and spectacular sunrise views.',
 
     image:
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
+      'https://images.hdqwalls.com/download/annapurna-massif-mountain-range-nepal-4k-hh-3840x2400.jpg?dl=1',
     images: [
-      'https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=800&q=80',
-      'https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=800&q=80',
-      'https://images.unsplash.com/photo-1597074866923-dc0589150a30?w=800&q=80',
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80'
+      'https://images.hdqwalls.com/download/annapurna-massif-mountain-range-nepal-4k-hh-3840x2400.jpg?dl=1',
+      'https://wallpaperbat.com/img/106681096-annapurna-hd-image.jpg',
+      'https://tse4.mm.bing.net/th/id/OIP.w38DRzEk8Axg7ySOcxG90AHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+      'https://bluemarbleadventures.com/wp-content/uploads/2023/10/annapurna-1.webp'
     ],
 
     tags: ['Trekking', 'Mountains', 'Poon Hill', 'Adventure'],
