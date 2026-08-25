@@ -91,9 +91,9 @@ cd client
 npm run dev
 ```
 
-Open the URL printed by Vite, usually `http://localhost:5173`.
+Open the frontend in your browser at `http://localhost:3000`.
 
-The frontend expects the API at `http://localhost:5000`. Update `client/src/services/api.js` if the backend runs at another address.
+The frontend uses the backend API at `http://localhost:5000`. This is not the browser UI URL. Update `client/src/services/api.js` if the backend runs at another address.
 
 ## Available Scripts
 
@@ -128,7 +128,7 @@ node server.js     # Start the Express API
 
 ## API Health Checks
 
-Once the server is running, these endpoints can be used to verify connectivity:
+The frontend runs at `http://localhost:3000`. Once the backend server is running, these API endpoints can be used to verify backend connectivity:
 
 ```text
 GET http://localhost:5000/

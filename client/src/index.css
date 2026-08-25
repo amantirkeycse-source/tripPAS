@@ -43,7 +43,11 @@
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-text focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200;
+  }
+
+  .input-field.input-error {
+    @apply border-red-400 focus:ring-red-400;
   }
 
   .label-field {
