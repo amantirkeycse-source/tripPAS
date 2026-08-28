@@ -19,8 +19,7 @@ import {
   Pencil
 } from 'lucide-react';
 
-import destinations from '../data/destinations';
-import experiences from '../data/experiences';
+import { getDestinations, getExperiences } from '../services/api';
 import { formatINR } from '../utils/format';
 import {
   updateTripStatus,
@@ -43,6 +42,10 @@ const statusOptions = [
 const SavedTrips = () => {
   const [activeTab, setActiveTab] = useState('trips');
 
+  // Reference data from API
+  const [destinations, setDestinations] = useState([]);
+  const [experiences, setExperiences] = useState([]);
+
   // User-specific IDs from MongoDB
   const [savedDestIds, setSavedDestIds] = useState([]);
   const [savedExpIds, setSavedExpIds] = useState([]);
@@ -53,18 +56,20 @@ const SavedTrips = () => {
   const [deletingTripId, setDeletingTripId] = useState(null);
 
   // ==================================================
-  // FETCH ALL USER DATA FROM API
+  // FETCH ALL USER DATA + REFERENCE DATA FROM API
   // ==================================================
   useEffect(() => {
-    const fetchAllUserData = async () => {
+    const fetchAllData = async () => {
       try {
         setLoadingTrips(true);
         setTripError('');
 
-        const [tripsRes, destsRes, expsRes] = await Promise.all([
+        const [tripsRes, destsRes, expsRes, allDestsRes, allExpsRes] = await Promise.all([
           getTrips(),
           getSavedDestinations(),
-          getSavedExperiences()
+          getSavedExperiences(),
+          getDestinations(),
+          getExperiences()
         ]);
 
         setPlannedTrips(tripsRes.trips || []);
@@ -74,6 +79,8 @@ const SavedTrips = () => {
         setSavedExpIds(
           (expsRes.savedExperiences || []).map(e => e.experienceId)
         );
+        if (allDestsRes.success) setDestinations(allDestsRes.destinations || []);
+        if (allExpsRes.success) setExperiences(allExpsRes.experiences || []);
       } catch (error) {
         console.error('Failed to load data:', error);
         setTripError(error.message || 'Could not load saved data');
@@ -82,7 +89,7 @@ const SavedTrips = () => {
       }
     };
 
-    fetchAllUserData();
+    fetchAllData();
   }, []);
 
   // ==================================================
@@ -269,11 +276,6 @@ const SavedTrips = () => {
   // ==================================================
   const changeTripStatus = async (tripId, newStatus) => {
     try {
-      const token = getToken();
-      if (!token) {
-        throw new Error('Please login again.');
-      }
-
       await updateTripStatus(tripId, newStatus);
 
       setPlannedTrips((current) =>

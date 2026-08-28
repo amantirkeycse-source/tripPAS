@@ -18,9 +18,10 @@ import {
 } from 'lucide-react';
 
 import StepIndicator from '../components/StepIndicator';
-import destinations from '../data/destinations';
+import { getDestinations } from '../services/api';
 import { formatINR } from '../utils/format';
 import { saveTrip, saveDestination } from '../services/api';
+import { destinations as localDestinations } from '../data/destinations';
 
 const steps = [
   'Start',
@@ -273,6 +274,22 @@ const TripPlanner = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [destinations, setDestinations] = useState([]);
+
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const res = await getDestinations();
+        if (res.success) {
+          setDestinations(res.destinations?.length ? res.destinations : localDestinations);
+        }
+      } catch (error) {
+        console.error('Failed to load destinations:', error);
+        setDestinations(localDestinations);
+      }
+    };
+    fetchDestinations();
+  }, []);
 
   /*
   |--------------------------------------------------------------------------
@@ -334,7 +351,7 @@ const TripPlanner = () => {
       (destination) =>
         destination.id === formData.destinationId
     );
-  }, [formData.destinationId]);
+  }, [formData.destinationId, destinations]);
 
   /*
   |--------------------------------------------------------------------------
@@ -394,7 +411,7 @@ const TripPlanner = () => {
         );
       })
       .slice(0, 8);
-  }, [destinationSearch]);
+  }, [destinationSearch, destinations]);
 
   /*
   |--------------------------------------------------------------------------
@@ -679,7 +696,7 @@ const TripPlanner = () => {
       case 0:
         return (
           <div>
-            <h3 className="text-2xl font-display font-semibold text-dark mb-6">
+            <h3 className="text-2xl font-display font-bold text-dark mb-6">
               Where are you starting from?
             </h3>
 
@@ -850,7 +867,7 @@ const TripPlanner = () => {
       case 1:
         return (
           <div>
-            <h3 className="text-2xl font-display font-semibold text-dark mb-6">
+            <h3 className="text-2xl font-display font-bold text-dark mb-6">
               Where are you going?
             </h3>
 
@@ -1044,7 +1061,7 @@ const TripPlanner = () => {
                   opacity: 1,
                   y: 0
                 }}
-                className="flex items-center gap-3 p-3 rounded-xl bg-primary-50 border border-primary-100"
+                className="flex items-center gap-3 p-4 rounded-2xl bg-primary-50 border-2 border-primary-200"
               >
                 <img
                   src={selectedDestination.image}
@@ -1053,7 +1070,7 @@ const TripPlanner = () => {
                 />
 
                 <div>
-                  <p className="font-semibold text-dark">
+                  <p className="font-bold text-dark">
                     {selectedDestination.name}
                   </p>
 
@@ -1083,7 +1100,7 @@ const TripPlanner = () => {
       case 2:
         return (
           <div>
-            <h3 className="text-2xl font-display font-semibold text-dark mb-6">
+            <h3 className="text-2xl font-display font-bold text-dark mb-6">
               How many travelers?
             </h3>
 
@@ -1110,7 +1127,7 @@ const TripPlanner = () => {
                         )
                       )
                     }
-                    className="w-12 h-12 rounded-xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 transition-colors"
+                    className="w-12 h-12 rounded-2xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 hover:bg-primary-50 transition-colors"
                     aria-label="Decrease adults"
                   >
                     −
@@ -1131,7 +1148,7 @@ const TripPlanner = () => {
                         )
                       )
                     }
-                    className="w-12 h-12 rounded-xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 transition-colors"
+                    className="w-12 h-12 rounded-2xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 hover:bg-primary-50 transition-colors"
                     aria-label="Increase adults"
                   >
                     +
@@ -1160,7 +1177,7 @@ const TripPlanner = () => {
                         )
                       )
                     }
-                    className="w-12 h-12 rounded-xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 transition-colors"
+                    className="w-12 h-12 rounded-2xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 hover:bg-primary-50 transition-colors"
                     aria-label="Decrease children"
                   >
                     −
@@ -1181,7 +1198,7 @@ const TripPlanner = () => {
                         )
                       )
                     }
-                    className="w-12 h-12 rounded-xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 transition-colors"
+                    className="w-12 h-12 rounded-2xl border-2 border-gray-200 text-2xl font-bold hover:border-primary-500 hover:bg-primary-50 transition-colors"
                     aria-label="Increase children"
                   >
                     +
@@ -1202,7 +1219,7 @@ const TripPlanner = () => {
       case 3:
         return (
           <div>
-            <h3 className="text-2xl font-display font-semibold text-dark mb-6">
+            <h3 className="text-2xl font-display font-bold text-dark mb-6">
               How many days?
             </h3>
 
@@ -1259,11 +1276,11 @@ const TripPlanner = () => {
       case 4:
         return (
           <div>
-            <h3 className="text-2xl font-display font-semibold text-dark mb-6">
+            <h3 className="text-2xl font-display font-bold text-dark mb-6">
               When are you traveling?
             </h3>
 
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {months.map((month) => (
                 <button
                   key={month}
@@ -1274,10 +1291,10 @@ const TripPlanner = () => {
                       month
                     )
                   }
-                  className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${
+                  className={`p-3 rounded-2xl border-2 text-sm font-semibold transition-all ${
                     formData.travelMonth === month
-                      ? 'border-primary-500 bg-primary-50 text-primary-500'
-                      : 'border-gray-200 hover:border-primary-200'
+                      ? 'border-primary-500 bg-primary-50 text-primary-600 shadow-md'
+                      : 'border-gray-200 hover:border-primary-200 hover:bg-primary-50/50'
                   }`}
                 >
                   {month}
@@ -1296,7 +1313,7 @@ const TripPlanner = () => {
       case 5:
         return (
           <div>
-            <h3 className="text-2xl font-display font-semibold text-dark mb-6">
+            <h3 className="text-2xl font-display font-bold text-dark mb-6">
               Travel style
             </h3>
 
@@ -1311,24 +1328,24 @@ const TripPlanner = () => {
                       style.key
                     )
                   }
-                  className={`p-4 rounded-xl border-2 text-left transition-all ${
+                  className={`p-5 rounded-2xl border-2 text-left transition-all ${
                     formData.travelStyle ===
                     style.key
-                      ? 'border-primary-500 bg-primary-50'
-                      : 'border-gray-200 hover:border-primary-200'
+                      ? 'border-primary-500 bg-primary-50 shadow-md'
+                      : 'border-gray-200 hover:border-primary-200 hover:bg-primary-50/50'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-semibold text-dark">
+                    <span className="font-bold text-dark text-lg">
                       {style.label}
                     </span>
 
-                    <span className="text-primary-500 font-bold">
+                    <span className="badge-primary text-xs">
                       {style.icon}
                     </span>
                   </div>
 
-                  <p className="text-xs text-muted">
+                  <p className="text-sm text-muted">
                     {style.desc}
                   </p>
                 </button>
@@ -1346,7 +1363,7 @@ const TripPlanner = () => {
       case 6:
         return (
           <div>
-            <h3 className="text-2xl font-display font-semibold text-dark mb-6">
+            <h3 className="text-2xl font-display font-bold text-dark mb-6">
               Travel preferences
             </h3>
 
@@ -1364,19 +1381,19 @@ const TripPlanner = () => {
                         option.key
                       )
                     }
-                    className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-all ${
+                    className={`p-5 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all ${
                       formData.transportPreference ===
                       option.key
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-primary-200'
+                        ? 'border-primary-500 bg-primary-50 shadow-md'
+                        : 'border-gray-200 hover:border-primary-200 hover:bg-primary-50/50'
                     }`}
                   >
                     <Icon
-                      size={24}
+                      size={28}
                       className="text-primary-500"
                     />
 
-                    <span className="font-medium text-dark text-sm">
+                    <span className="font-semibold text-dark text-sm">
                       {option.label}
                     </span>
                   </button>
@@ -1398,17 +1415,27 @@ const TripPlanner = () => {
   */
 
   return (
-    <div className="min-h-screen bg-surface py-12">
+    <div className="min-h-screen bg-surface pt-28 pb-12">
       <div className="container-tp">
 
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-display font-bold text-dark mb-3">
-            Plan Your Trip
-          </h1>
+        {/* Header with gradient accent and glows */}
+        <div className="relative text-center mb-10">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-primary-500/10 rounded-full blur-3xl -z-10 pointer-events-none" />
+          <div className="absolute -top-8 right-1/4 w-[180px] h-[180px] bg-primary-400/8 rounded-full blur-3xl -z-10 pointer-events-none" />
 
-          <p className="text-lg text-muted max-w-2xl mx-auto">
-            Answer a few questions and we'll calculate your estimated trip budget.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-4xl font-display font-bold text-dark mb-3">
+              Plan Your Trip
+            </h1>
+
+            <p className="text-lg text-muted max-w-2xl mx-auto">
+              Answer a few questions and we'll calculate your estimated trip budget.
+            </p>
+          </motion.div>
         </div>
 
         <div className="max-w-3xl mx-auto">
@@ -1418,32 +1445,37 @@ const TripPlanner = () => {
             currentStep={currentStep}
           />
 
-          <div className="card p-6 lg:p-8">
+          <div className="card rounded-3xl overflow-hidden">
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentStep}
-                initial={{
-                  opacity: 0,
-                  x: 20
-                }}
-                animate={{
-                  opacity: 1,
-                  x: 0
-                }}
-                exit={{
-                  opacity: 0,
-                  x: -20
-                }}
-                transition={{
-                  duration: 0.3
-                }}
-              >
-                {renderStep()}
-              </motion.div>
-            </AnimatePresence>
+            <div className="p-6 lg:p-8">
 
-            <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStep}
+                  initial={{
+                    opacity: 0,
+                    x: 20
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0
+                  }}
+                  exit={{
+                    opacity: 0,
+                    x: -20
+                  }}
+                  transition={{
+                    duration: 0.3
+                  }}
+                >
+                  {renderStep()}
+                </motion.div>
+              </AnimatePresence>
+
+            </div>
+
+            <div className="flex items-center justify-between px-6 lg:px-8 py-6 border-t border-gray-100 bg-gray-50/50">
 
               <button
                 type="button"

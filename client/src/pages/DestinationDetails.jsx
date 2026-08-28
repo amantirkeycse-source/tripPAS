@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, Users, Thermometer, Star, Bookmark, ArrowRight, Clock, Tag, Check, ChevronDown } from 'lucide-react';
-import { getDestinationById, getSimilarDestinations } from '../data/destinations';
-import experiences from '../data/experiences';
+import { getDestination, getSimilarDestinations, getExperiences } from '../services/api';
 import { formatINR } from '../utils/format';
 import DestinationCard from '../components/DestinationCard';
 import ExperienceCard from '../components/ExperienceCard';
@@ -15,8 +14,47 @@ import DestinationImageCarousel from '../components/DestinationImageCarousel';
 const DestinationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const destination = getDestinationById(id);
+  const [destination, setDestination] = useState(null);
+  const [similarDestinations, setSimilarDestinations] = useState([]);
+  const [destinationExperiences, setDestinationExperiences] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [destRes, similarRes, expsRes] = await Promise.all([
+          getDestination(id),
+          getSimilarDestinations(id),
+          getExperiences()
+        ]);
+        if (destRes.success) setDestination(destRes.destination);
+        if (similarRes.success) setSimilarDestinations(similarRes.destinations || []);
+        if (expsRes.success) {
+          const allExps = expsRes.experiences || [];
+          setDestinationExperiences(allExps.filter(e => e.destinationId === id).slice(0, 3));
+        }
+      } catch (error) {
+        console.error('Failed to load destination:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-14 h-14 border-4 border-primary-100 border-t-primary-500 rounded-full animate-spin mx-auto mb-5" />
+          <p className="text-lg font-display font-semibold text-dark mb-1">Loading destination</p>
+          <p className="text-sm text-muted">Gathering details for you...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!destination) {
     return (
@@ -30,8 +68,6 @@ const DestinationDetails = () => {
     );
   }
 
-  const similarDestinations = getSimilarDestinations(id, 3);
-  const destinationExperiences = experiences.filter(e => e.destinationId === id).slice(0, 3);
   const tiers = destination.budgetTiers || {
     budget: { price: destination.startingBudget, accommodation: 'Basic stay', transport: 'Public transport', food: 'Local food', activities: 'Essential activities', benefits: ['Basic stay', 'Public transport', 'Essential activities'] },
     comfort: { price: destination.startingBudget * 1.5, accommodation: '3★ hotel', transport: 'Private cab', food: 'Good restaurants', activities: 'More activities', benefits: ['Better stay', 'Private transport', 'More activities'] },
@@ -49,7 +85,7 @@ const DestinationDetails = () => {
   return (
     <div>
       {/* Hero */}
-      <section className="relative h-[60vh] min-h-[400px]">
+      <section className="relative h-[65vh] min-h-[440px]">
         <DestinationImageCarousel
           images={destination.images || (destination.image ? [destination.image] : [])}
           alt={destination.name}
@@ -57,7 +93,8 @@ const DestinationDetails = () => {
           autoPlay={5000}
           showDots={true}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-dark/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-dark/40 to-transparent pointer-events-none" />
         <div className="absolute bottom-0 left-0 right-0">
           <div className="container-tp pb-10">
             <motion.div
@@ -65,14 +102,14 @@ const DestinationDetails = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="flex items-center gap-2 text-white/80 text-sm mb-2">
-                <MapPin size={16} />
+              <div className="flex items-center gap-2 text-white/70 text-sm mb-3">
+                <MapPin size={16} className="text-primary-400" />
                 {destination.country} · {destination.state || destination.region}
               </div>
               <h1 className="text-4xl lg:text-6xl font-display font-bold text-white mb-3">
                 {destination.name}
               </h1>
-              <p className="text-white/80 max-w-2xl mb-6">{destination.description}</p>
+              <p className="text-white/70 max-w-2xl mb-6">{destination.description}</p>
               <div className="flex flex-wrap gap-4">
                 <button onClick={() => navigate('/plan', { state: { destinationId: destination.id } })} className="btn-accent">
                   Plan This Trip
@@ -80,8 +117,8 @@ const DestinationDetails = () => {
                 </button>
                 <button
                   onClick={() => setSaved(!saved)}
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
-                    saved ? 'bg-white text-primary-500' : 'bg-white/10 backdrop-blur text-white hover:bg-white/20'
+                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all duration-200 ${
+                    saved ? 'bg-white text-primary-500 shadow-elevated' : 'bg-white/10 backdrop-blur text-white hover:bg-white/20 ring-1 ring-white/20'
                   }`}
                 >
                   <Bookmark size={18} className={saved ? 'fill-primary-500' : ''} />
@@ -94,7 +131,8 @@ const DestinationDetails = () => {
       </section>
 
       {/* Overview */}
-      <section className="py-12">
+      <section className="py-16 relative">
+        <div className="absolute -top-10 right-10 w-32 h-32 bg-primary-500/5 rounded-full blur-3xl pointer-events-none" />
         <div className="container-tp">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {[
@@ -110,11 +148,13 @@ const DestinationDetails = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="card p-4 text-center"
+                className="card p-5 text-center hover:shadow-card-hover transition-all duration-200"
               >
-                <item.icon size={20} className="mx-auto text-primary-500 mb-2" />
-                <p className="text-xs text-muted mb-1">{item.label}</p>
-                <p className="text-sm font-semibold text-dark">{item.value}</p>
+                <div className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-3">
+                  <item.icon size={20} className="text-primary-500" />
+                </div>
+                <p className="text-xs font-medium text-muted mb-1">{item.label}</p>
+                <p className="text-sm font-bold text-dark">{item.value}</p>
               </motion.div>
             ))}
           </div>
@@ -122,9 +162,10 @@ const DestinationDetails = () => {
       </section>
 
       {/* Minimum Budget */}
-      <section className="py-12 bg-white">
+      <section className="py-16 bg-white relative">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
         <div className="container-tp">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div>
               <h2 className="text-3xl font-display font-bold text-dark mb-4">Minimum Budget</h2>
               <p className="text-muted mb-6">
@@ -146,7 +187,7 @@ const DestinationDetails = () => {
                   ].map((item) => (
                     <div key={item.label} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                       <span className="text-sm text-text">{item.label}</span>
-                      <span className="text-sm font-semibold text-dark">{formatINR(item.value)}</span>
+                      <span className="text-sm font-bold text-dark">{formatINR(item.value)}</span>
                     </div>
                   ))}
                 </div>
@@ -159,7 +200,7 @@ const DestinationDetails = () => {
             {/* Budget Tiers */}
             <div>
               <h2 className="text-3xl font-display font-bold text-dark mb-6">Budget Tiers</h2>
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-5">
                 {Object.entries(tiers).map(([key, tier], index) => (
                   <motion.div
                     key={key}
@@ -167,21 +208,29 @@ const DestinationDetails = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.05 }}
-                    className={`card p-6 ${key === 'budget' ? 'ring-2 ring-primary-500' : ''}`}
+                    className={`card-hover overflow-hidden ${key === 'budget' ? 'ring-2 ring-primary-500 shadow-elevated' : ''}`}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-display font-semibold text-dark capitalize">{key}</h3>
-                      {key === 'budget' && <span className="badge bg-primary-500 text-white">Minimum</span>}
+                    <div className={`h-1 ${
+                      key === 'budget' ? 'bg-gradient-to-r from-primary-500 to-primary-600' :
+                      key === 'comfort' ? 'bg-gradient-to-r from-blue-400 to-blue-500' :
+                      key === 'premium' ? 'bg-gradient-to-r from-amber-400 to-amber-500' :
+                      'bg-gradient-to-r from-purple-400 to-purple-500'
+                    }`} />
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-display font-bold text-dark capitalize">{key}</h3>
+                        {key === 'budget' && <span className="badge-primary">Minimum</span>}
+                      </div>
+                      <p className="text-2xl font-display font-bold text-primary-500 mb-4">{formatINR(tier.price)}</p>
+                      <ul className="space-y-2">
+                        {(tier.benefits || []).map((benefit) => (
+                          <li key={benefit} className="flex items-start gap-2 text-sm text-text">
+                            <Check size={14} className="text-primary-500 mt-0.5 shrink-0" />
+                            {benefit}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <p className="text-2xl font-display font-bold text-primary-500 mb-3">{formatINR(tier.price)}</p>
-                    <ul className="space-y-1.5">
-                      {(tier.benefits || []).map((benefit) => (
-                        <li key={benefit} className="flex items-start gap-2 text-sm text-text">
-                          <Check size={14} className="text-primary-500 mt-0.5 shrink-0" />
-                          {benefit}
-                        </li>
-                      ))}
-                    </ul>
                   </motion.div>
                 ))}
               </div>
@@ -191,11 +240,12 @@ const DestinationDetails = () => {
       </section>
 
       {/* Things to do */}
-      <section className="py-12">
+      <section className="py-16 relative">
+        <div className="absolute -bottom-10 right-20 w-40 h-40 bg-primary-500/5 rounded-full blur-3xl pointer-events-none" />
         <div className="container-tp">
-          <h2 className="text-3xl font-display font-bold text-dark mb-6">Things to do</h2>
+          <h2 className="text-3xl font-display font-bold text-dark mb-8">Things to do</h2>
           {destination.activities?.length ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {destination.activities.map((activity, index) => (
                 <ActivityCard key={activity.name} activity={activity} index={index} />
               ))}
@@ -207,11 +257,12 @@ const DestinationDetails = () => {
       </section>
 
       {/* Community recommendations */}
-      <section className="py-12 bg-white">
+      <section className="py-16 bg-white relative">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
         <div className="container-tp">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-display font-bold text-dark">Community recommendations</h2>
-            <Link to="/experiences" className="text-sm font-semibold text-primary-500 hover:text-primary-600">
+            <Link to="/experiences" className="text-sm font-semibold text-primary-500 hover:text-primary-600 transition-colors duration-200">
               View all experiences
             </Link>
           </div>
@@ -232,17 +283,19 @@ const DestinationDetails = () => {
       </section>
 
       {/* FAQ */}
-      <section className="py-12">
+      <section className="py-16">
         <div className="container-tp max-w-3xl">
-          <h2 className="text-3xl font-display font-bold text-dark mb-6 text-center">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-display font-bold text-dark mb-8 text-center">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <details key={index} className="card p-6 group">
-                <summary className="flex items-center justify-between cursor-pointer font-semibold text-dark">
+              <details key={index} className="card-hover p-0 group">
+                <summary className="flex items-center justify-between cursor-pointer font-bold text-dark p-7">
                   {faq.q}
-                  <ChevronDown size={20} className="text-muted group-open:rotate-180 transition-transform" />
+                  <ChevronDown size={20} className="text-muted group-open:rotate-180 transition-transform duration-200 shrink-0 ml-4" />
                 </summary>
-                <p className="mt-4 text-sm text-text leading-relaxed">{faq.a}</p>
+                <div className="px-7 pb-7">
+                  <p className="text-sm text-gray-500 leading-relaxed">{faq.a}</p>
+                </div>
               </details>
             ))}
           </div>
@@ -251,9 +304,14 @@ const DestinationDetails = () => {
 
       {/* Similar destinations */}
       {similarDestinations.length > 0 && (
-        <section className="py-12 bg-white">
+        <section className="py-16 bg-white relative">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+          <div className="absolute -top-10 left-10 w-40 h-40 bg-primary-500/5 rounded-full blur-3xl pointer-events-none" />
           <div className="container-tp">
-            <h2 className="text-3xl font-display font-bold text-dark mb-6">Similar destinations</h2>
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-display font-bold text-dark mb-3">Similar destinations</h2>
+              <p className="text-gray-500">You might also love these places</p>
+            </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {similarDestinations.map((dest, index) => (
                 <DestinationCard key={dest.id} destination={dest} index={index} />

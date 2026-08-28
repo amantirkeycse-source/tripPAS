@@ -1,13 +1,16 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, MapPin } from 'lucide-react';
-import destinations from '../data/destinations';
+import { MapPin, SlidersHorizontal } from 'lucide-react';
+import { getDestinations } from '../services/api';
 import DestinationGrid from '../components/DestinationGrid';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import EmptyState from '../components/EmptyState';
+import { destinations as localDestinations } from '../data/destinations';
 
 const Explore = () => {
+  const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     country: [],
@@ -17,10 +20,27 @@ const Explore = () => {
   });
   const [visibleCount, setVisibleCount] = useState(9);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const res = await getDestinations();
+        if (res.success) {
+          setDestinations(res.destinations?.length ? res.destinations : localDestinations);
+        }
+      } catch (error) {
+        console.error('Failed to load destinations:', error);
+        setDestinations(localDestinations);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   const filteredDestinations = useMemo(() => {
     let result = destinations;
 
-    // Search
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(d =>
@@ -31,12 +51,10 @@ const Explore = () => {
       );
     }
 
-    // Country filter
     if (filters.country.length > 0) {
       result = result.filter(d => filters.country.includes(d.country));
     }
 
-    // Budget filter
     if (filters.budget.length > 0) {
       result = result.filter(d => {
         return filters.budget.some(range => {
@@ -50,7 +68,6 @@ const Explore = () => {
       });
     }
 
-    // Style filter
     if (filters.style.length > 0) {
       result = result.filter(d =>
         d.tags?.some(tag => filters.style.includes(tag)) ||
@@ -58,7 +75,6 @@ const Explore = () => {
       );
     }
 
-    // Duration filter
     if (filters.duration.length > 0) {
       result = result.filter(d => {
         return filters.duration.some(duration => {
@@ -73,29 +89,51 @@ const Explore = () => {
     }
 
     return result;
-  }, [searchQuery, filters]);
+  }, [searchQuery, filters, destinations]);
 
   const visibleDestinations = filteredDestinations.slice(0, visibleCount);
   const hasMore = visibleCount < filteredDestinations.length;
 
+  const activeFilterCount = Object.values(filters).reduce((acc, arr) => acc + (arr?.length || 0), 0);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary-100 border-t-primary-500 rounded-full animate-spin mx-auto mb-6" />
+          <p className="text-xl font-display font-bold text-dark mb-2">Discovering destinations</p>
+          <p className="text-sm text-gray-500">Finding the best places for you...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="bg-dark text-white py-16">
-        <div className="container-tp">
+      <section className="relative bg-dark text-white py-24 overflow-hidden">
+        {/* Decorative glows */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-amber-500/5 rounded-full blur-[100px]" />
+
+        <div className="container-tp relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl lg:text-5xl font-display font-bold mb-4">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 text-white/70 text-sm font-medium mb-6">
+              <MapPin size={14} className="text-primary-400" />
+              {filteredDestinations.length}+ destinations
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-white mb-5 leading-tight">
               Explore Destinations
             </h1>
-            <p className="text-lg text-white/70 max-w-2xl">
+            <p className="text-lg text-white/50 max-w-2xl mb-10 leading-relaxed">
               Discover incredible places across India and Nepal with realistic starting budgets.
             </p>
-            <div className="mt-8 max-w-xl">
-              <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Where do you want to go?" />
+            <div className="max-w-xl">
+              <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by name, country, or tag..." />
             </div>
           </motion.div>
         </div>
@@ -109,27 +147,40 @@ const Explore = () => {
 
             <div>
               <div className="flex items-center justify-between mb-6">
-                <p className="text-sm text-muted">
-                  Showing <span className="font-semibold text-dark">{visibleDestinations.length}</span> of{' '}
-                  <span className="font-semibold text-dark">{filteredDestinations.length}</span> destinations
+                <p className="text-sm text-gray-500">
+                  Showing{' '}
+                  <span className="font-bold text-dark">{visibleDestinations.length}</span>
+                  {' '}of{' '}
+                  <span className="font-bold text-dark">{filteredDestinations.length}</span>
+                  {' '}destinations
                 </p>
-                <span className="badge bg-primary-50 text-primary-500">
-                  <MapPin size={14} className="mr-1" />
-                  India & Nepal
-                </span>
+                {activeFilterCount > 0 && (
+                  <span className="badge-primary">
+                    <SlidersHorizontal size={12} />
+                    {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} active
+                  </span>
+                )}
               </div>
 
               {filteredDestinations.length === 0 ? (
                 <EmptyState
                   title="No destinations found"
                   description="Try adjusting your search or filters to find more destinations."
+                  action={(
+                    <button
+                      onClick={() => setFilters({ country: [], budget: [], style: [], duration: [] })}
+                      className="btn-secondary"
+                    >
+                      Clear Filters
+                    </button>
+                  )}
                 />
               ) : (
                 <>
                   <DestinationGrid destinations={visibleDestinations} />
                   {hasMore && (
-                    <div className="text-center mt-10">
-                      <button onClick={() => setVisibleCount(visibleCount + 9)} className="btn-secondary">
+                    <div className="text-center mt-12">
+                      <button onClick={() => setVisibleCount(visibleCount + 9)} className="btn-secondary px-8 py-3">
                         Load More Destinations
                       </button>
                     </div>

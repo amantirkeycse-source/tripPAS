@@ -210,11 +210,16 @@ const Auth = () => {
      ========================================================= */
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
+    <div className="min-h-screen flex bg-surface pt-20">
       {/* -------------------------------------------------- */}
       {/* LEFT PANEL — Brand                                  */}
       {/* -------------------------------------------------- */}
-      <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden bg-gradient-to-br from-teal-600 via-teal-700 to-teal-900">
+      <div className="hidden lg:flex lg:w-[55%] lg:min-h-[calc(100vh-5rem)] relative overflow-hidden bg-gradient-to-br from-dark via-slate-900 to-primary-900 lg:-mt-20 lg:pt-20">
+        {/* decorative glows */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-24 w-[500px] h-[500px] bg-primary-300/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary-500/5 rounded-full blur-3xl" />
+
         {/* dot grid */}
         <div
           className="absolute inset-0 opacity-[0.08]"
@@ -229,28 +234,28 @@ const Auth = () => {
         <DestinationFloat
           src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?w=400&q=80"
           alt="Manali"
-          className="top-16 left-8 w-40 h-28"
+          className="top-24 left-6 w-48 h-32"
           duration={5}
           delay={0}
         />
         <DestinationFloat
           src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=400&q=80"
           alt="Goa"
-          className="top-32 right-12 w-44 h-32"
+          className="top-32 right-10 w-52 h-36"
           duration={6}
           delay={0.8}
         />
         <DestinationFloat
           src="https://images.unsplash.com/photo-1598091383021-15ddea10925d?w=400&q=80"
           alt="Kashmir"
-          className="bottom-36 left-16 w-48 h-28"
+          className="bottom-40 left-14 w-56 h-32"
           duration={4.5}
           delay={1.6}
         />
         <DestinationFloat
           src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=400&q=80"
           alt="Pokhara"
-          className="bottom-20 right-8 w-36 h-36"
+          className="bottom-24 right-6 w-44 h-44"
           duration={5.5}
           delay={0.4}
         />
@@ -268,15 +273,15 @@ const Auth = () => {
                 <Compass size={24} className="text-white" />
               </div>
               <span className="font-display font-bold text-3xl tracking-tight">
-                Trip<span className="text-teal-200">PAS</span>
+                Trip<span className="text-primary-200">PAS</span>
               </span>
             </Link>
 
             {/* headline */}
-            <h1 className="text-4xl xl:text-5xl font-display font-bold leading-[1.15] mb-5">
+            <h1 className="text-4xl xl:text-5xl font-display font-bold text-white leading-[1.15] mb-5">
               Your next adventure
               <br />
-              <span className="text-teal-200">starts here</span>
+              <span className="text-primary-200">starts here</span>
             </h1>
 
             <p className="text-lg text-white/75 mb-10 max-w-md leading-relaxed">
@@ -314,8 +319,8 @@ const Auth = () => {
       {/* -------------------------------------------------- */}
       {/* RIGHT PANEL — Form                                  */}
       {/* -------------------------------------------------- */}
-      <div className="w-full lg:w-[45%] flex items-center justify-center p-6 sm:p-8 lg:p-10 bg-white">
-        <div className="w-full max-w-[400px]">
+      <div className="w-full lg:w-[45%] flex items-center justify-center p-4 sm:p-8 lg:p-10 bg-surface min-h-full">
+        <div className="w-full max-w-[440px] bg-white rounded-3xl border border-gray-200/80 shadow-elevated p-6 sm:p-8 lg:p-9">
           {/* mobile logo */}
           <motion.div
             className="lg:hidden text-center mb-8"
@@ -324,11 +329,11 @@ const Auth = () => {
             transition={{ duration: 0.4 }}
           >
             <Link to="/" className="inline-flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-teal-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center">
                 <Compass size={20} className="text-white" />
               </div>
               <span className="font-display font-bold text-2xl text-gray-900">
-                Trip<span className="text-teal-500">PAS</span>
+                Trip<span className="text-primary-500">PAS</span>
               </span>
             </Link>
           </motion.div>
@@ -383,21 +388,21 @@ const Auth = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="flex bg-gray-100 rounded-xl p-1 mb-6"
+            className="flex bg-gray-100/80 rounded-xl p-1 mb-7 ring-1 ring-gray-200/70"
           >
             {['login', 'signup'].map((m) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => switchMode(m)}
-                className="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors relative select-none"
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 relative select-none"
                 aria-selected={mode === m}
                 role="tab"
               >
                 {mode === m && (
                   <motion.div
                     layoutId="authTab"
-                    className="absolute inset-0 bg-white rounded-lg shadow-sm"
+                    className="absolute inset-0 bg-white rounded-xl shadow-md ring-1 ring-gray-900/5"
                     transition={{
                       type: 'spring',
                       stiffness: 400,
@@ -408,7 +413,7 @@ const Auth = () => {
                 <span
                   className={`relative z-10 ${
                     mode === m
-                      ? 'text-teal-600'
+                      ? 'text-primary-600 font-bold'
                       : 'text-gray-500 hover:text-gray-800'
                   }`}
                 >
@@ -461,7 +466,7 @@ const Auth = () => {
                     value={formData.name}
                     onChange={(e) => updateField('name', e.target.value)}
                     placeholder="Aman Tirkey"
-                    className={`input-field pl-11 pr-10 ${
+                    className={`input-field pl-11 pr-10 py-3.5 rounded-xl bg-gray-50/70 hover:border-gray-300 focus:bg-white focus:ring-4 focus:ring-primary-500/10 ${
                       errors.name ? 'input-error' : ''
                     }`}
                     aria-invalid={!!errors.name}
@@ -478,7 +483,7 @@ const Auth = () => {
             </AnimatedField>
 
             {/* email */}
-            <div className="pt-3.5">
+            <div className="pt-4">
               <FormField
                 label="Email Address"
                 htmlFor="auth-email"
@@ -497,7 +502,7 @@ const Auth = () => {
                       updateField('email', e.target.value)
                     }
                     placeholder="you@example.com"
-                    className={`input-field pl-11 pr-10 ${
+                    className={`input-field pl-11 pr-10 py-3.5 rounded-xl bg-gray-50/70 hover:border-gray-300 focus:bg-white focus:ring-4 focus:ring-primary-500/10 ${
                       errors.email ? 'input-error' : ''
                     }`}
                     aria-invalid={!!errors.email}
@@ -520,7 +525,7 @@ const Auth = () => {
             </div>
 
             {/* password */}
-            <div className="pt-3.5">
+            <div className="pt-4">
               <FormField
                 label="Password"
                 htmlFor="auth-password"
@@ -543,7 +548,7 @@ const Auth = () => {
                       updateField('password', e.target.value)
                     }
                     placeholder={mode === 'signup' ? 'Create a password' : 'Enter your password'}
-                    className={`input-field pl-11 pr-11 ${
+                    className={`input-field pl-11 pr-11 py-3.5 rounded-xl bg-gray-50/70 hover:border-gray-300 focus:bg-white focus:ring-4 focus:ring-primary-500/10 ${
                       errors.password ? 'input-error' : ''
                     }`}
                     aria-invalid={!!errors.password}
@@ -614,7 +619,7 @@ const Auth = () => {
                       )
                     }
                     placeholder="Re-enter your password"
-                    className={`input-field pl-11 pr-10 ${
+                    className={`input-field pl-11 pr-10 py-3.5 rounded-xl bg-gray-50/70 hover:border-gray-300 focus:bg-white focus:ring-4 focus:ring-primary-500/10 ${
                       errors.confirmPassword
                         ? 'input-error'
                         : ''
@@ -647,7 +652,7 @@ const Auth = () => {
                 <label className="flex items-center gap-2 cursor-pointer select-none">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 rounded border-gray-300 text-teal-500 focus:ring-teal-500 transition"
+                    className="w-4 h-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500 transition"
                   />
                   <span className="text-sm text-gray-500">
                     Remember me
@@ -655,7 +660,7 @@ const Auth = () => {
                 </label>
                 <button
                   type="button"
-                  className="text-sm font-medium text-teal-600 hover:text-teal-700 hover:underline transition-colors"
+                  className="text-sm font-medium text-primary-600 hover:text-primary-700 hover:underline transition-colors"
                 >
                   Forgot password?
                 </button>
@@ -663,19 +668,19 @@ const Auth = () => {
             )}
 
             {/* submit */}
-            <div className="pt-4">
+            <div className="pt-5">
               <motion.button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-xl font-semibold text-white
-                  bg-gradient-to-r from-teal-500 to-teal-600
-                  hover:from-teal-600 hover:to-teal-700
-                  active:from-teal-700 active:to-teal-800
+                className="w-full h-13 py-3.5 rounded-xl font-bold text-white
+                  bg-gradient-to-r from-primary-500 to-primary-600
+                  hover:from-primary-600 hover:to-primary-700
+                  active:from-primary-700 active:to-primary-800
                   disabled:opacity-50 disabled:cursor-not-allowed
-                  shadow-md shadow-teal-500/20
-                  transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                whileHover={loading ? {} : { scale: 1.005 }}
-                whileTap={loading ? {} : { scale: 0.995 }}
+                  shadow-lg shadow-primary-500/30
+                  transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                whileHover={loading ? {} : { scale: 1.01 }}
+                whileTap={loading ? {} : { scale: 0.99 }}
               >
                 <AnimatePresence mode="wait">
                   {loading ? (
@@ -729,7 +734,7 @@ const Auth = () => {
               );
             }}
             disabled={loading}
-            className="w-full h-12 flex items-center justify-center gap-3 rounded-xl border border-gray-200 font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 active:bg-gray-100 transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+            className="w-full h-13 py-3.5 flex items-center justify-center gap-3 rounded-xl border-2 border-gray-200 font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 active:bg-gray-100 transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
           >
             <GoogleIcon />
             Continue with Google
@@ -740,14 +745,14 @@ const Auth = () => {
             By continuing, you agree to TripPAS's{' '}
             <Link
               to="/terms"
-              className="text-teal-500 hover:underline font-medium"
+              className="text-primary-500 hover:underline font-medium"
             >
               Terms
             </Link>{' '}
             and{' '}
             <Link
               to="/privacy"
-              className="text-teal-500 hover:underline font-medium"
+              className="text-primary-500 hover:underline font-medium"
             >
               Privacy Policy
             </Link>
@@ -763,10 +768,10 @@ const Auth = () => {
             ].map((f) => (
               <div
                 key={f.text}
-                className="text-center py-3 bg-gray-50 rounded-xl border border-gray-100"
+                className="text-center py-4 bg-gradient-to-b from-primary-50 to-white rounded-2xl border border-primary-100 shadow-sm hover:shadow-md transition-all"
               >
-                <div className="text-lg mb-0.5">{f.emoji}</div>
-                <p className="text-[11px] text-gray-500 font-medium">
+                <div className="text-xl mb-1">{f.emoji}</div>
+                <p className="text-[12px] text-primary-600 font-bold">
                   {f.text}
                 </p>
               </div>
@@ -826,7 +831,7 @@ function AnimatedField({ show, children }) {
           transition={{ duration: 0.25, ease: 'easeInOut' }}
           className="overflow-hidden"
         >
-          <div className="pt-3.5">{children}</div>
+          <div className="pt-4">{children}</div>
         </motion.div>
       )}
     </AnimatePresence>
@@ -839,7 +844,7 @@ function FormField({ label, htmlFor, error, children }) {
     <div>
       <label
         htmlFor={htmlFor}
-        className="block text-sm font-medium text-gray-700 mb-1.5"
+        className="block text-sm font-bold text-gray-700 mb-2"
       >
         {label}
       </label>
@@ -936,7 +941,7 @@ function PasswordStrength({ strength, colors, labels }) {
         {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+            className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
               i <= strength ? color : 'bg-gray-200'
             }`}
           />

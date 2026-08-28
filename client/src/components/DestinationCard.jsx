@@ -5,64 +5,71 @@ import { formatINR } from '../utils/format';
 import DestinationImageCarousel from './DestinationImageCarousel';
 
 const DestinationCard = ({ destination, index = 0 }) => {
-  // Get images - use images array if available, fallback to single image
   const images = destination.images || (destination.image ? [destination.image] : []);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      whileHover={{ y: -4 }}
-      className="group card overflow-hidden cursor-pointer"
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.45, delay: index * 0.06, ease: [0.33, 1, 0.68, 1] }}
+      className="group card overflow-hidden"
     >
       <Link to={`/destination/${destination.id}`} className="block">
-        <div className="relative h-48 overflow-hidden">
+        {/* Image */}
+        <div className="relative h-56 overflow-hidden">
           <DestinationImageCarousel
             images={images}
             alt={`${destination.name}, ${destination.country}`}
-            height="h-48"
+            height="h-full"
             autoPlay={5000}
             showDots={false}
-            className="group-hover:scale-105 transition-transform duration-500"
+            className="group-hover:scale-110 transition-transform duration-700 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between pointer-events-none">
-            <div>
-              <h3 className="text-white font-display font-semibold text-xl drop-shadow">
-                {destination.name}
-              </h3>
-              <p className="text-white/80 text-sm flex items-center gap-1">
-                <MapPin size={14} />
-                {destination.country}
-              </p>
-            </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+
+          {/* Price Badge */}
+          <div className="absolute top-4 right-4">
+            <span className="inline-flex items-center px-3.5 py-2 rounded-xl bg-white/95 backdrop-blur-sm text-xs font-bold text-primary-700 shadow-lg">
+              From {formatINR(destination.startingBudget)}
+            </span>
           </div>
-          <span className="absolute top-3 right-3 badge bg-white/90 text-primary-500 shadow pointer-events-none">
-            From {formatINR(destination.startingBudget)}
-          </span>
+
+          {/* Name overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-5">
+            <h3 className="text-white font-display font-bold text-2xl leading-tight drop-shadow-lg">
+              {destination.name}
+            </h3>
+            <p className="text-white/70 text-sm flex items-center gap-1.5 mt-1">
+              <MapPin size={14} className="text-primary-300" />
+              {destination.country}
+              {destination.state ? `, ${destination.state}` : ''}
+            </p>
+          </div>
         </div>
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-muted flex items-center gap-1">
+
+        {/* Content */}
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-3.5">
+            <span className="text-xs text-gray-500 flex items-center gap-1.5">
               <Calendar size={14} />
               {destination.bestTime || 'Year round'}
             </span>
-            <span className="text-xs font-semibold text-primary-500">
+            <span className="text-xs font-bold text-primary-600">
               {destination.idealDuration || '3-5 days'}
             </span>
           </div>
+
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap gap-1.5">
-              {(destination.tags || []).slice(0, 3).map((tag) => (
-                <span key={tag} className="badge bg-primary-50 text-primary-500">
+              {(destination.tags || []).slice(0, 2).map((tag) => (
+                <span key={tag} className="badge-primary text-[11px]">
                   {tag}
                 </span>
               ))}
             </div>
-            <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary-500 group-hover:gap-2 transition-all">
-              Explore <ArrowRight size={16} />
+            <span className="inline-flex items-center gap-1.5 text-sm font-bold text-primary-500 group-hover:gap-2.5 transition-all duration-200">
+              Explore <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
             </span>
           </div>
         </div>

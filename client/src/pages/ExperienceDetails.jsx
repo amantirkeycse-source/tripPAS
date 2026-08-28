@@ -1,20 +1,72 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, Bookmark, Flag, MapPin, Calendar, Clock, Users, Wallet, Check, X, Lightbulb, Eye, AlertTriangle } from 'lucide-react';
-import { getExperienceById, getRelatedExperiences } from '../data/experiences';
-import { getDestinationById } from '../data/destinations';
+import { getExperience, getRelatedExperiences, getDestination } from '../services/api';
 import { formatINR, getInitials } from '../utils/format';
+import { getExperienceById, getRelatedExperiences as getLocalRelatedExperiences } from '../data/experiences';
 import Rating from '../components/Rating';
 import ExperienceCard from '../components/ExperienceCard';
 import EmptyState from '../components/EmptyState';
 
 const ExperienceDetails = () => {
   const { id } = useParams();
-  const experience = getExperienceById(id);
+  const [experience, setExperience] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const [relatedExperiences, setRelatedExperiences] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [reported, setReported] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const localExperience = getExperienceById(id);
+      try {
+        setLoading(true);
+        const expRes = await getExperience(id);
+        const currentExperience = expRes.success && expRes.experience
+          ? expRes.experience
+          : localExperience;
+
+        if (currentExperience) {
+          setExperience(currentExperience);
+          const [relatedRes, destRes] = await Promise.allSettled([
+            getRelatedExperiences(id),
+            getDestination(currentExperience.destinationId)
+          ]);
+          if (relatedRes.status === 'fulfilled' && relatedRes.value.success) {
+            setRelatedExperiences(relatedRes.value.experiences || []);
+          } else {
+            setRelatedExperiences(getLocalRelatedExperiences(id).filter((item) => item.id !== id));
+          }
+          if (destRes.status === 'fulfilled' && destRes.value.success) {
+            setDestination(destRes.value.destination);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load experience:', error);
+        setExperience(localExperience);
+        setRelatedExperiences(localExperience
+          ? getLocalRelatedExperiences(id).filter((item) => item.id !== id)
+          : []);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-surface py-12">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary-100 border-t-primary-500 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted">Loading experience...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!experience) {
     return (
@@ -28,9 +80,6 @@ const ExperienceDetails = () => {
     );
   }
 
-  const destination = getDestinationById(experience.destinationId);
-  const relatedExperiences = getRelatedExperiences(id, 3);
-
   const sections = [
     { icon: Lightbulb, title: 'My trip', content: experience.story },
     { icon: Check, title: 'What I recommend', content: experience.whatIRecommend },
@@ -41,7 +90,7 @@ const ExperienceDetails = () => {
   ].filter(section => section.content);
 
   return (
-    <div className="min-h-screen bg-surface py-12">
+    <div className="min-h-screen bg-surface pt-28 pb-12">
       <div className="container-tp max-w-4xl">
         {/* Header */}
         <motion.div

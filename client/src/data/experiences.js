@@ -225,6 +225,42 @@ const experiences = [
     likes: 84,
     saves: 92,
     createdAt: '2025-12-02'
+  },
+  {
+    id: 'exp-12',
+    user: { id: 'u12', name: 'Aisha Kapoor', avatar: 'https://i.pravatar.cc/150?img=44', verified: true },
+    destinationId: 'varanasi',
+    title: 'A soulful weekend in Varanasi',
+    destination: 'Varanasi',
+    country: 'India',
+    date: 'May 2026',
+    duration: '3 days',
+    budget: 8500,
+    travelers: 2,
+    rating: 4.8,
+    travelStyle: 'Culture',
+    storyPreview: 'Sunrise boat rides, old lanes, and the most memorable local food trail.',
+    likes: 136,
+    saves: 104,
+    createdAt: '2026-05-18'
+  },
+  {
+    id: 'exp-13',
+    user: { id: 'u13', name: 'Arjun Mehta', avatar: 'https://i.pravatar.cc/150?img=64', verified: false },
+    destinationId: 'darjeeling',
+    title: 'Darjeeling on a slow travel plan',
+    destination: 'Darjeeling',
+    country: 'India',
+    date: 'October 2025',
+    duration: '4 days',
+    budget: 16000,
+    travelers: 2,
+    rating: 4.6,
+    travelStyle: 'Nature',
+    storyPreview: 'A relaxed mountain escape with toy train views, quiet cafés, and sunrise at Tiger Hill.',
+    likes: 98,
+    saves: 76,
+    createdAt: '2025-10-11'
   }
 ];
 

@@ -20,8 +20,7 @@ import {
   Check
 } from 'lucide-react';
 
-import destinations from '../data/destinations';
-import { getTrip, updateTrip } from '../services/api';
+import { getDestinations, getTrip, updateTrip } from '../services/api';
 
 const months = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -60,6 +59,9 @@ const EditTrip = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
+  // Destinations from API
+  const [destinations, setDestinations] = useState([]);
+
   // Form fields
   const [startingCity, setStartingCity] = useState('');
   const [citySearch, setCitySearch] = useState('');
@@ -76,6 +78,21 @@ const EditTrip = () => {
   const filteredCities = popularCities.filter(city =>
     city.toLowerCase().includes(citySearch.toLowerCase())
   ).slice(0, 6);
+
+  // ==================================================
+  // FETCH DESTINATIONS
+  // ==================================================
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const res = await getDestinations();
+        if (res.success) setDestinations(res.destinations || []);
+      } catch (err) {
+        console.error('Failed to load destinations:', err);
+      }
+    };
+    fetchDestinations();
+  }, []);
 
   // ==================================================
   // FETCH EXISTING TRIP
@@ -225,20 +242,24 @@ const EditTrip = () => {
             Back to Saved Trips
           </Link>
 
-          <div className="flex items-center gap-4">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary-50">
-              <Compass size={24} className="text-primary-500" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-display font-bold text-dark">
-                Edit Trip
-              </h1>
-              <p className="text-muted">
-                {selectedDest
-                  ? `Editing your trip to ${selectedDest.name}`
-                  : 'Update your trip details'
-                }
-              </p>
+          <div className="relative">
+            <div className="absolute -top-4 -right-10 w-[160px] h-[160px] bg-primary-500/10 rounded-full blur-3xl -z-10 pointer-events-none" />
+
+            <div className="flex items-center gap-4">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 border border-primary-100">
+                <Compass size={28} className="text-primary-500" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-display font-bold text-dark">
+                  Edit Trip
+                </h1>
+                <p className="text-muted">
+                  {selectedDest
+                    ? `Editing your trip to ${selectedDest.name}`
+                    : 'Update your trip details'
+                  }
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -250,19 +271,22 @@ const EditTrip = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card p-6 mb-6 border border-green-200 bg-green-50"
+            className="card rounded-3xl overflow-hidden mb-6"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                <Check size={20} className="text-green-600" />
-              </div>
-              <div>
-                <p className="font-semibold text-green-800">
-                  Trip updated successfully!
-                </p>
-                <p className="text-sm text-green-600">
-                  Redirecting to your saved trips...
-                </p>
+            <div className="h-1 bg-gradient-to-r from-green-400 to-green-500" />
+            <div className="p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-green-100 flex items-center justify-center">
+                  <Check size={22} className="text-green-600" />
+                </div>
+                <div>
+                  <p className="font-bold text-green-800">
+                    Trip updated successfully!
+                  </p>
+                  <p className="text-sm text-green-600">
+                    Redirecting to your saved trips...
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -275,11 +299,14 @@ const EditTrip = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card p-4 mb-6 border border-red-200 bg-red-50"
+            className="card rounded-3xl overflow-hidden mb-6"
           >
-            <div className="flex items-center gap-3">
-              <AlertCircle size={18} className="text-red-500" />
-              <p className="text-sm text-red-700">{error}</p>
+            <div className="h-1 bg-gradient-to-r from-red-400 to-red-500" />
+            <div className="p-4">
+              <div className="flex items-center gap-3">
+                <AlertCircle size={18} className="text-red-500" />
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
             </div>
           </motion.div>
         )}
@@ -293,49 +320,54 @@ const EditTrip = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card p-6"
+            className="card rounded-3xl overflow-hidden"
           >
-            <label className="flex items-center gap-2 text-sm font-semibold text-dark mb-3">
-              <MapPin size={18} className="text-primary-500" />
-              Starting City
-            </label>
-            <div className="relative">
-              <div className="flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-200 focus-within:border-primary-500 focus-within:ring-2 focus-within:ring-primary-100 transition-all bg-white">
-                <Search size={18} className="text-muted" />
-                <input
-                  type="text"
-                  value={citySearch}
-                  onChange={(e) => {
-                    setCitySearch(e.target.value);
-                    setStartingCity(e.target.value);
-                    setShowCitySuggestions(true);
-                  }}
-                  onFocus={() => setShowCitySuggestions(true)}
-                  onBlur={() => setTimeout(() => setShowCitySuggestions(false), 200)}
-                  placeholder="Search your city..."
-                  className="flex-1 outline-none text-dark bg-transparent"
-                />
-              </div>
-
-              {showCitySuggestions && filteredCities.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-10 overflow-hidden">
-                  {filteredCities.map((city) => (
-                    <button
-                      key={city}
-                      type="button"
-                      onMouseDown={() => {
-                        setStartingCity(city);
-                        setCitySearch(city);
-                        setShowCitySuggestions(false);
-                      }}
-                      className="w-full px-4 py-3 text-left text-sm hover:bg-primary-50 transition-colors flex items-center gap-2"
-                    >
-                      <MapPin size={14} className="text-primary-500" />
-                      {city}
-                    </button>
-                  ))}
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+            <div className="p-6">
+              <label className="flex items-center gap-2 text-sm font-bold text-dark mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 flex items-center justify-center">
+                  <MapPin size={16} className="text-primary-500" />
                 </div>
-              )}
+                Starting City
+              </label>
+              <div className="relative">
+                <div className="flex items-center gap-2 px-4 py-3 rounded-2xl border-2 border-gray-200 focus-within:border-primary-500 focus-within:ring-2 focus-within:ring-primary-100 transition-all bg-white">
+                  <Search size={18} className="text-muted" />
+                  <input
+                    type="text"
+                    value={citySearch}
+                    onChange={(e) => {
+                      setCitySearch(e.target.value);
+                      setStartingCity(e.target.value);
+                      setShowCitySuggestions(true);
+                    }}
+                    onFocus={() => setShowCitySuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowCitySuggestions(false), 200)}
+                    placeholder="Search your city..."
+                    className="flex-1 outline-none text-dark bg-transparent font-medium"
+                  />
+                </div>
+
+                {showCitySuggestions && filteredCities.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-2xl shadow-xl z-10 overflow-hidden">
+                    {filteredCities.map((city) => (
+                      <button
+                        key={city}
+                        type="button"
+                        onMouseDown={() => {
+                          setStartingCity(city);
+                          setCitySearch(city);
+                          setShowCitySuggestions(false);
+                        }}
+                        className="w-full px-4 py-3 text-left text-sm hover:bg-primary-50 transition-colors flex items-center gap-2 font-medium"
+                      >
+                        <MapPin size={14} className="text-primary-500" />
+                        {city}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </motion.div>
 
@@ -344,42 +376,47 @@ const EditTrip = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="card p-6"
+            className="card rounded-3xl overflow-hidden"
           >
-            <label className="flex items-center gap-2 text-sm font-semibold text-dark mb-3">
-              <Compass size={18} className="text-primary-500" />
-              Destination
-            </label>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {destinations.map((dest) => (
-                <button
-                  key={dest.id}
-                  type="button"
-                  onClick={() => setDestinationId(dest.id)}
-                  className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
-                    destinationId === dest.id
-                      ? 'border-primary-500 bg-primary-50'
-                      : 'border-gray-200 hover:border-primary-200'
-                  }`}
-                >
-                  <img
-                    src={dest.image}
-                    alt={dest.name}
-                    className="w-12 h-12 rounded-lg object-cover"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-dark text-sm truncate">
-                      {dest.name}
-                    </p>
-                    <p className="text-xs text-muted truncate">
-                      {dest.country}
-                    </p>
-                  </div>
-                  {destinationId === dest.id && (
-                    <Check size={18} className="text-primary-500 shrink-0" />
-                  )}
-                </button>
-              ))}
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+            <div className="p-6">
+              <label className="flex items-center gap-2 text-sm font-bold text-dark mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 flex items-center justify-center">
+                  <Compass size={16} className="text-primary-500" />
+                </div>
+                Destination
+              </label>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {destinations.map((dest) => (
+                  <button
+                    key={dest.id}
+                    type="button"
+                    onClick={() => setDestinationId(dest.id)}
+                    className={`flex items-center gap-3 p-3 rounded-2xl border-2 transition-all text-left ${
+                      destinationId === dest.id
+                        ? 'border-primary-500 bg-primary-50 shadow-md'
+                        : 'border-gray-200 hover:border-primary-200'
+                    }`}
+                  >
+                    <img
+                      src={dest.image}
+                      alt={dest.name}
+                      className="w-12 h-12 rounded-xl object-cover"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-dark text-sm truncate">
+                        {dest.name}
+                      </p>
+                      <p className="text-xs text-muted truncate">
+                        {dest.country}
+                      </p>
+                    </div>
+                    {destinationId === dest.id && (
+                      <Check size={18} className="text-primary-500 shrink-0" />
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </motion.div>
 
@@ -388,51 +425,56 @@ const EditTrip = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="card p-6"
+            className="card rounded-3xl overflow-hidden"
           >
-            <label className="flex items-center gap-2 text-sm font-semibold text-dark mb-3">
-              <Users size={18} className="text-primary-500" />
-              Travelers
-            </label>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted mb-2">Adults</p>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setAdults(Math.max(1, adults - 1))}
-                    className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors font-bold text-dark"
-                  >
-                    −
-                  </button>
-                  <span className="w-10 text-center font-semibold text-dark text-lg">{adults}</span>
-                  <button
-                    type="button"
-                    onClick={() => setAdults(Math.min(20, adults + 1))}
-                    className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors font-bold text-dark"
-                  >
-                    +
-                  </button>
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+            <div className="p-6">
+              <label className="flex items-center gap-2 text-sm font-bold text-dark mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 flex items-center justify-center">
+                  <Users size={16} className="text-primary-500" />
                 </div>
-              </div>
-              <div>
-                <p className="text-sm text-muted mb-2">Children</p>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setChildren(Math.max(0, children - 1))}
-                    className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors font-bold text-dark"
-                  >
-                    −
-                  </button>
-                  <span className="w-10 text-center font-semibold text-dark text-lg">{children}</span>
-                  <button
-                    type="button"
-                    onClick={() => setChildren(Math.min(10, children + 1))}
-                    className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors font-bold text-dark"
-                  >
-                    +
-                  </button>
+                Travelers
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted mb-2">Adults</p>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setAdults(Math.max(1, adults - 1))}
+                      className="w-11 h-11 rounded-2xl border-2 border-gray-200 flex items-center justify-center hover:border-primary-500 hover:bg-primary-50 transition-colors font-bold text-dark text-lg"
+                    >
+                      −
+                    </button>
+                    <span className="w-10 text-center font-bold text-dark text-xl">{adults}</span>
+                    <button
+                      type="button"
+                      onClick={() => setAdults(Math.min(20, adults + 1))}
+                      className="w-11 h-11 rounded-2xl border-2 border-gray-200 flex items-center justify-center hover:border-primary-500 hover:bg-primary-50 transition-colors font-bold text-dark text-lg"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm text-muted mb-2">Children</p>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setChildren(Math.max(0, children - 1))}
+                      className="w-11 h-11 rounded-2xl border-2 border-gray-200 flex items-center justify-center hover:border-primary-500 hover:bg-primary-50 transition-colors font-bold text-dark text-lg"
+                    >
+                      −
+                    </button>
+                    <span className="w-10 text-center font-bold text-dark text-xl">{children}</span>
+                    <button
+                      type="button"
+                      onClick={() => setChildren(Math.min(10, children + 1))}
+                      className="w-11 h-11 rounded-2xl border-2 border-gray-200 flex items-center justify-center hover:border-primary-500 hover:bg-primary-50 transition-colors font-bold text-dark text-lg"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -443,31 +485,36 @@ const EditTrip = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="card p-6"
+            className="card rounded-3xl overflow-hidden"
           >
-            <label className="flex items-center gap-2 text-sm font-semibold text-dark mb-3">
-              <Calendar size={18} className="text-primary-500" />
-              Duration (Days)
-            </label>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setDays(Math.max(1, days - 1))}
-                className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors font-bold text-dark"
-              >
-                −
-              </button>
-              <span className="w-12 text-center font-semibold text-dark text-lg">{days}</span>
-              <button
-                type="button"
-                onClick={() => setDays(Math.min(30, days + 1))}
-                className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors font-bold text-dark"
-              >
-                +
-              </button>
-              <span className="text-sm text-muted ml-2">
-                ({Math.max(days - 1, 1)} nights)
-              </span>
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+            <div className="p-6">
+              <label className="flex items-center gap-2 text-sm font-bold text-dark mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 flex items-center justify-center">
+                  <Calendar size={16} className="text-primary-500" />
+                </div>
+                Duration (Days)
+              </label>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDays(Math.max(1, days - 1))}
+                  className="w-11 h-11 rounded-2xl border-2 border-gray-200 flex items-center justify-center hover:border-primary-500 hover:bg-primary-50 transition-colors font-bold text-dark text-lg"
+                >
+                  −
+                </button>
+                <span className="w-12 text-center font-bold text-dark text-xl">{days}</span>
+                <button
+                  type="button"
+                  onClick={() => setDays(Math.min(30, days + 1))}
+                  className="w-11 h-11 rounded-2xl border-2 border-gray-200 flex items-center justify-center hover:border-primary-500 hover:bg-primary-50 transition-colors font-bold text-dark text-lg"
+                >
+                  +
+                </button>
+                <span className="text-sm text-muted ml-2">
+                  ({Math.max(days - 1, 1)} nights)
+                </span>
+              </div>
             </div>
           </motion.div>
 
@@ -476,27 +523,32 @@ const EditTrip = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="card p-6"
+            className="card rounded-3xl overflow-hidden"
           >
-            <label className="flex items-center gap-2 text-sm font-semibold text-dark mb-3">
-              <Calendar size={18} className="text-primary-500" />
-              Travel Month
-            </label>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {months.map((month) => (
-                <button
-                  key={month}
-                  type="button"
-                  onClick={() => setTravelMonth(month)}
-                  className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                    travelMonth === month
-                      ? 'bg-primary-500 text-white shadow'
-                      : 'bg-surface text-text hover:bg-primary-50'
-                  }`}
-                >
-                  {month.slice(0, 3)}
-                </button>
-              ))}
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+            <div className="p-6">
+              <label className="flex items-center gap-2 text-sm font-bold text-dark mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 flex items-center justify-center">
+                  <Calendar size={16} className="text-primary-500" />
+                </div>
+                Travel Month
+              </label>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {months.map((month) => (
+                  <button
+                    key={month}
+                    type="button"
+                    onClick={() => setTravelMonth(month)}
+                    className={`px-3 py-2.5 rounded-2xl text-sm font-semibold transition-all ${
+                      travelMonth === month
+                        ? 'bg-primary-500 text-white shadow-lg'
+                        : 'bg-surface text-text hover:bg-primary-50 border-2 border-gray-100 hover:border-primary-200'
+                    }`}
+                  >
+                    {month.slice(0, 3)}
+                  </button>
+                ))}
+              </div>
             </div>
           </motion.div>
 
@@ -505,31 +557,36 @@ const EditTrip = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="card p-6"
+            className="card rounded-3xl overflow-hidden"
           >
-            <label className="flex items-center gap-2 text-sm font-semibold text-dark mb-3">
-              <Wallet size={18} className="text-primary-500" />
-              Travel Style
-            </label>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {travelStyles.map((style) => (
-                <button
-                  key={style.key}
-                  type="button"
-                  onClick={() => setTravelStyle(style.key)}
-                  className={`p-4 rounded-xl border-2 transition-all text-left ${
-                    travelStyle === style.key
-                      ? 'border-primary-500 bg-primary-50'
-                      : 'border-gray-200 hover:border-primary-200'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-semibold text-dark">{style.label}</span>
-                    <span className="text-sm font-bold text-primary-500">{style.icon}</span>
-                  </div>
-                  <p className="text-xs text-muted">{style.desc}</p>
-                </button>
-              ))}
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+            <div className="p-6">
+              <label className="flex items-center gap-2 text-sm font-bold text-dark mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 flex items-center justify-center">
+                  <Wallet size={16} className="text-primary-500" />
+                </div>
+                Travel Style
+              </label>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {travelStyles.map((style) => (
+                  <button
+                    key={style.key}
+                    type="button"
+                    onClick={() => setTravelStyle(style.key)}
+                    className={`p-5 rounded-2xl border-2 transition-all text-left ${
+                      travelStyle === style.key
+                        ? 'border-primary-500 bg-primary-50 shadow-md'
+                        : 'border-gray-200 hover:border-primary-200'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-dark">{style.label}</span>
+                      <span className="badge-primary text-xs">{style.icon}</span>
+                    </div>
+                    <p className="text-sm text-muted">{style.desc}</p>
+                  </button>
+                ))}
+              </div>
             </div>
           </motion.div>
 
@@ -538,38 +595,43 @@ const EditTrip = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="card p-6"
+            className="card rounded-3xl overflow-hidden"
           >
-            <label className="flex items-center gap-2 text-sm font-semibold text-dark mb-3">
-              <Route size={18} className="text-primary-500" />
-              Transport Preference
-            </label>
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-              {transportOptions.map((option) => {
-                const Icon = option.icon;
-                return (
-                  <button
-                    key={option.key}
-                    type="button"
-                    onClick={() => setTransportPreference(option.key)}
-                    className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                      transportPreference === option.key
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-primary-200'
-                    }`}
-                  >
-                    <Icon
-                      size={22}
-                      className={transportPreference === option.key ? 'text-primary-500' : 'text-muted'}
-                    />
-                    <span className={`text-xs font-medium ${
-                      transportPreference === option.key ? 'text-primary-500' : 'text-dark'
-                    }`}>
-                      {option.label}
-                    </span>
-                  </button>
-                );
-              })}
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
+            <div className="p-6">
+              <label className="flex items-center gap-2 text-sm font-bold text-dark mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary-50 flex items-center justify-center">
+                  <Route size={16} className="text-primary-500" />
+                </div>
+                Transport Preference
+              </label>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+                {transportOptions.map((option) => {
+                  const Icon = option.icon;
+                  return (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() => setTransportPreference(option.key)}
+                      className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
+                        transportPreference === option.key
+                          ? 'border-primary-500 bg-primary-50 shadow-md'
+                          : 'border-gray-200 hover:border-primary-200'
+                      }`}
+                    >
+                      <Icon
+                        size={24}
+                        className={transportPreference === option.key ? 'text-primary-500' : 'text-muted'}
+                      />
+                      <span className={`text-xs font-semibold ${
+                        transportPreference === option.key ? 'text-primary-500' : 'text-dark'
+                      }`}>
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
 
