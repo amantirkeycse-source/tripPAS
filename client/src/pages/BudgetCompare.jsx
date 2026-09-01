@@ -15,19 +15,46 @@ const BudgetCompare = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await getDestinations();
-        if (res.success) setDestinations(res.destinations || []);
-      } catch (error) {
-        console.error('Failed to load destinations:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      const res = await getDestinations();
+
+      console.log('BudgetCompare destinations response:', res);
+
+      const destinationList =
+        Array.isArray(res)
+          ? res
+          : Array.isArray(res?.destinations)
+            ? res.destinations
+            : Array.isArray(res?.data?.destinations)
+              ? res.data.destinations
+              : Array.isArray(res?.data)
+                ? res.data
+                : [];
+
+      setDestinations(destinationList);
+
+      console.log(
+        'BudgetCompare loaded destinations:',
+        destinationList
+      );
+
+    } catch (error) {
+      console.error(
+        'Failed to load destinations:',
+        error
+      );
+
+      setDestinations([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
 
   /*
   |--------------------------------------------------------------------------
@@ -81,14 +108,13 @@ const BudgetCompare = () => {
     destinations;
 
   const selectedIds =
-    currentTrip.compareDestinationIds?.length === 3
-      ? currentTrip.compareDestinationIds
-      : [
-          defaultOne?.id,
-          defaultTwo?.id,
-          defaultThree?.id
-        ].filter(Boolean);
-
+  currentTrip.compareDestinationIds?.length
+    ? currentTrip.compareDestinationIds.slice(0, 3)
+    : [
+        defaultOne?.id,
+        defaultTwo?.id,
+        defaultThree?.id
+      ].filter(Boolean);
   /*
   |--------------------------------------------------------------------------
   | Selected destination objects
@@ -225,37 +251,35 @@ const BudgetCompare = () => {
   |--------------------------------------------------------------------------
   */
 
-  const handleDestinationChange = (
-    destinationId
-  ) => {
+  const handleDestinationChange = (destinationId) => {
+  let newIds;
 
-    const alreadySelected =
-      selectedIds.includes(
-        destinationId
-      );
-
-    if (alreadySelected) {
+  if (selectedIds.includes(destinationId)) {
+    // Remove selected destination
+    newIds = selectedIds.filter(
+      (id) => id !== destinationId
+    );
+  } else {
+    // Maximum 3 destinations
+    if (selectedIds.length >= 3) {
       return;
     }
 
-    const newIds = [
-      ...selectedIds.slice(0, 2),
-      destinationId
-    ];
+    newIds = [...selectedIds, destinationId];
+  }
 
-    navigate('/compare', {
-      state: {
-        ...currentTrip,
-        compareDestinationIds:
-          newIds
-      },
-      replace: true
-    });
-  };
+  navigate('/compare', {
+    state: {
+      ...currentTrip,
+      compareDestinationIds: newIds
+    },
+    replace: true
+  });
+};
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface py-12">
+      <div className="min-h-screen flex items-center justify-center bg-surface pt-28 pb-12">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-primary-100 border-t-primary-500 rounded-full animate-spin mx-auto mb-4" />
           <p className="text-muted">Loading destinations...</p>
@@ -271,7 +295,7 @@ const BudgetCompare = () => {
   */
 
   return (
-    <div className="min-h-screen bg-surface py-12">
+    <div className="min-h-screen bg-surface pt-28 pb-12">
 
       <div className="container-tp">
 

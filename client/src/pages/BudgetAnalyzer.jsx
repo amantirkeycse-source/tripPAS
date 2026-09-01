@@ -171,7 +171,7 @@ const BudgetAnalyzer = () => {
   if (!destination || !cost) {
 
     return (
-      <div className="container-tp py-20">
+      <div className="container-tp pt-28 pb-20">
 
         <EmptyState
           title="No trip data found"
@@ -279,7 +279,8 @@ const BudgetAnalyzer = () => {
     <div className="
       min-h-screen
       bg-surface
-      py-12
+      pt-28
+      pb-12
     ">
 
       <div className="container-tp">

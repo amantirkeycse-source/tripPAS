@@ -779,7 +779,7 @@ const TripPlanner = () => {
                     transition={{
                       duration: 0.18
                     }}
-                    className="absolute left-0 right-0 top-full mt-2 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden"
+                    className="absolute left-0 right-0 top-full mt-3 z-[100] bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden"
                   >
                     <div className="px-4 py-3 border-b border-gray-100">
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted">
@@ -1445,7 +1445,7 @@ const TripPlanner = () => {
             currentStep={currentStep}
           />
 
-          <div className="card rounded-3xl overflow-hidden">
+          <div className="card rounded-3xl overflow-visible">
             <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-600" />
 
             <div className="p-6 lg:p-8">
